@@ -60,7 +60,7 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 2
 }
 
-ROOT_URLCONF = 'shopping_cart.urls'
+ROOT_URLCONF = 'ferreteria_api.urls'
 
 TEMPLATES = [
     {
@@ -78,7 +78,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'shopping_cart.wsgi.application'
+WSGI_APPLICATION = 'ferreteria_api.wsgi.application'
 
 
 # Database
