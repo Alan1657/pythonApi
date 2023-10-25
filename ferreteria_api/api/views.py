@@ -9,6 +9,7 @@ from .models import *
 
 # Create your views here.
 
+
 class PedidoViews(GenericAPIView):
     serializer_class = PedidoSerializer
     pagination_class = PageNumberPagination
@@ -31,7 +32,7 @@ class PedidoViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Pedido.objects.get(id=id)
@@ -48,7 +49,7 @@ class PedidoViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Pedido.objects.get(id=id)
         serializer = PedidoSerializer(item, data=request.data, partial=True)
@@ -70,12 +71,13 @@ class PedidoViews(GenericAPIView):
         item = get_object_or_404(Pedido, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
 
 class ProductViews(GenericAPIView):
-    
+
     serializer_class = ProductSerializer
     pagination_class = PageNumberPagination
 
@@ -97,7 +99,7 @@ class ProductViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Product.objects.get(id=id)
@@ -114,7 +116,7 @@ class ProductViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Product.objects.get(id=id)
         serializer = ProductSerializer(item, data=request.data, partial=True)
@@ -136,10 +138,11 @@ class ProductViews(GenericAPIView):
         item = get_object_or_404(Product, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
-    
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
+
 class SupplierViews(GenericAPIView):
     serializer_class = SupplierSerializer
     pagination_class = PageNumberPagination
@@ -162,7 +165,7 @@ class SupplierViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Supplier.objects.get(id=id)
@@ -179,7 +182,7 @@ class SupplierViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Supplier.objects.get(id=id)
         serializer = SupplierSerializer(item, data=request.data, partial=True)
@@ -201,9 +204,10 @@ class SupplierViews(GenericAPIView):
         item = get_object_or_404(Supplier, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
 
 class PersonViews(GenericAPIView):
     serializer_class = PersonSerializer
@@ -227,7 +231,7 @@ class PersonViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Person.objects.get(id=id)
@@ -244,7 +248,7 @@ class PersonViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Person.objects.get(id=id)
         serializer = PersonSerializer(item, data=request.data, partial=True)
@@ -266,9 +270,10 @@ class PersonViews(GenericAPIView):
         item = get_object_or_404(Person, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
 
 class CustomerViews(GenericAPIView):
     serializer_class = CustomerSerializer
@@ -292,7 +297,7 @@ class CustomerViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Customer.objects.get(id=id)
@@ -309,7 +314,7 @@ class CustomerViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Customer.objects.get(id=id)
         serializer = CustomerSerializer(item, data=request.data, partial=True)
@@ -331,9 +336,10 @@ class CustomerViews(GenericAPIView):
         item = get_object_or_404(Customer, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
 
 class EmployeeViews(GenericAPIView):
     serializer_class = EmployeeSerializer
@@ -357,7 +363,7 @@ class EmployeeViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Employee.objects.get(id=id)
@@ -374,7 +380,7 @@ class EmployeeViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Employee.objects.get(id=id)
         serializer = EmployeeSerializer(item, data=request.data, partial=True)
@@ -396,9 +402,10 @@ class EmployeeViews(GenericAPIView):
         item = get_object_or_404(Employee, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
+
 
 class CategoryViews(GenericAPIView):
     serializer_class = CategorySerializer
@@ -422,7 +429,7 @@ class CategoryViews(GenericAPIView):
                 "data": serializer.data
             },
                 status=status.HTTP_400_BAD_REQUEST)
-    
+
     def get(self, request, id=None):
         if id:
             item = Category.objects.get(id=id)
@@ -439,7 +446,7 @@ class CategoryViews(GenericAPIView):
             "status": "success",
             "data": self.paginate_queryset(serializer.data)
         })
-        
+
     def patch(self, request, id=None):
         item = Category.objects.get(id=id)
         serializer = CategorySerializer(item, data=request.data, partial=True)
@@ -461,6 +468,6 @@ class CategoryViews(GenericAPIView):
         item = get_object_or_404(Category, id=id)
         item.delete()
         return Response({
-                "status": "success",
-                "data": "Item Deleted"
-            })
+            "status": "success",
+            "data": "Item Deleted"
+        })
