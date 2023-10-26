@@ -32,14 +32,12 @@ python manage.py migrate
 ```
 python manage.py runserver
 ```
+5. Crea un superusuario de ser necesario:
 
 ```
 Para crear un super usuario y acceder al admin:
-
-```
 make createsuperuser
 ```
-
 ## Base de datos:
 
 Esto proyecto requiere que tenga instalado MySQL.
