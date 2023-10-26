@@ -6,7 +6,6 @@ from django.core.exceptions import ValidationError
 
 # Create your models here.
 
-
 class Category(models.Model):
     category_name = models.CharField(max_length=200)
 
