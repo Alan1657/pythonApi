@@ -75,6 +75,70 @@ class PedidoViews(GenericAPIView):
             "data": "Item Deleted"
         })
 
+class PedidoDetalleViews(GenericAPIView):
+    serializer_class = PedidoDetalleSerializer
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        return Pedido_detalle.objects.all()
+
+    def post(self, request):
+        serializer = PedidoDetalleSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "status": "success",
+                "data": serializer.data
+            },
+                status=status.HTTP_200_OK)
+        else:
+            return Response({
+                "status": "error",
+                "data": serializer.data
+            },
+                status=status.HTTP_400_BAD_REQUEST)
+
+    def get(self, request, id=None):
+        if id:
+            item = Pedido_detalle.objects.get(id=id)
+            serializer = PedidoDetalleSerializer(item)
+            return Response({
+                "status": "success",
+                "data": serializer.data
+            },
+                status=status.HTTP_200_OK)
+
+        items = Pedido_detalle.objects.all()
+        serializer = PedidoDetalleSerializer(items, many=True)
+        return self.get_paginated_response({
+            "status": "success",
+            "data": self.paginate_queryset(serializer.data)
+        })
+
+    def patch(self, request, id=None):
+        item = Pedido_detalle.objects.get(id=id)
+        serializer = PedidoDetalleSerializer(item, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({
+                "status": "success",
+                "data": serializer.data
+            },
+                status=status.HTTP_200_OK)
+        else:
+            return Response({
+                "status": "error",
+                "data": serializer.errors
+            },
+                status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, id=None):
+        item = get_object_or_404(Pedido_detalle, id=id)
+        item.delete()
+        return Response({
+            "status": "success",
+            "data": "Item Deleted"
+        })
 
 class ProductViews(GenericAPIView):
 

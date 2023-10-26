@@ -8,6 +8,11 @@ class PedidoSerializer(serializers.ModelSerializer):
         model = Pedido
         fields = '__all__'
 
+class PedidoDetalleSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Pedido_detalle
+        fields = '__all__'
+
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category

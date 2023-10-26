@@ -5,6 +5,8 @@ from .views import *
 urlpatterns = [
     path("Pedido/", PedidoViews.as_view(), name="pedidos"),
     path("Pedido/<int:id>", PedidoViews.as_view(), name="pedido_id"),
+    path("Pedido_detalle/", PedidoDetalleViews.as_view(), name="pedido_detalle"),
+    path("Pedido_detalle/<int:id>", PedidoDetalleViews.as_view(), name="pedido_detalle_id"),
     path("Product/", ProductViews.as_view(), name="products"),
     path("Product/<int:id>", ProductViews.as_view(), name="product_id"),
     path("Supplier/", SupplierViews.as_view(), name="suppliers"),
