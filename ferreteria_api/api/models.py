@@ -1,10 +1,11 @@
 from django.db import models
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, pre_save
 from django.dispatch import receiver
 from django.utils import timezone
-from django.db.models.signals import post_delete
+from django.core.exceptions import ValidationError
 
 # Create your models here.
+
 
 class Category(models.Model):
     category_name = models.CharField(max_length=200)
@@ -27,10 +28,11 @@ class Person(models.Model):
 
 class Supplier(models.Model):
     Supplier_person = models.ForeignKey(
-        Person, on_delete=models.CASCADE, related_name='supplier_person',default=1)
+        Person, on_delete=models.CASCADE, related_name='supplier_person', default=1)
 
     def __str__(self):
         return f"{self.Supplier_person.person_name_RazonSocial} - ${self.Supplier_person.person_DNI_RUC}"
+
 
 class Customer(models.Model):
     customer_person = models.ForeignKey(
@@ -39,11 +41,12 @@ class Customer(models.Model):
     def __str__(self):
         return f"{self.customer_person.person_name_RazonSocial} - ${self.customer_person.person_DNI_RUC}"
 
+
 class Employee(models.Model):
     Employee_cargo = models.CharField(max_length=100)
     Employee_person = models.ForeignKey(
         Person, on_delete=models.CASCADE, related_name='employee_person')
-    
+
     def __str__(self):
         return f"{self.Employee_cargo} - ${self.Employee_person.person_name_RazonSocial}"
 
@@ -58,8 +61,14 @@ class Product(models.Model):
         Supplier, on_delete=models.CASCADE, related_name='product_supplier')
     product_stock = models.IntegerField(default=0)
 
+    def save(self, *args, **kwargs):
+        if self.product_stock < 0:
+            raise ValidationError("El stock no puede ser negativo.")
+        super(Product, self).save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.product_name} - ${self.product_brand} - {self.product_price}- {self.product_stock}"
+
 
 class Pedido(models.Model):
     Employee_pedido = models.ForeignKey(
@@ -70,6 +79,7 @@ class Pedido(models.Model):
 
     def __str__(self):
         return f"{self.Customer_pedido.customer_person.person_DNI_RUC} - ${self.order_date}"
+
 
 class Pedido_detalle(models.Model):
     product_pedido = models.ForeignKey(
@@ -86,20 +96,6 @@ class Pedido_detalle(models.Model):
         return f"{self.product_pedido.product_name} - ${self.product_pedido.product_price} - {self.quantity}- {self.precio_parcial}"
 
 
-# Define una función para actualizar el stock
-@receiver(post_save, sender=Pedido_detalle)
-def actualizar_stock(sender, instance, **kwargs):
-    # instance es la instancia de Pedido que se acaba de guardar
-    producto = instance.product_pedido
-    cantidad_vendida = instance.quantity
-    producto.product_stock -= cantidad_vendida
-    producto.save()
-
-
-# Conecta la señal post_save al modelo Pedido
-post_save.connect(actualizar_stock, sender=Pedido_detalle)
-
-# Define una función para restaurar el stock cuando se elimina un Pedido_detalle
 @receiver(post_delete, sender=Pedido_detalle)
 def restaurar_stock(sender, instance, **kwargs):
     # instance es la instancia de Pedido_detalle que se acaba de eliminar
@@ -108,5 +104,21 @@ def restaurar_stock(sender, instance, **kwargs):
     producto.product_stock += cantidad_eliminada
     producto.save()
 
+
 # Conecta la señal post_delete al modelo Pedido_detalle
 post_delete.connect(restaurar_stock, sender=Pedido_detalle)
+
+
+# Define una función para actualizar el stock antes de guardar un Pedido_detalle
+@receiver(pre_save, sender=Pedido_detalle)
+def validar_stock(sender, instance, **kwargs):
+    producto = instance.product_pedido
+    cantidad_vendida = instance.quantity
+    if producto.product_stock - cantidad_vendida < 0:
+        raise ValidationError("No hay suficiente stock para este pedido.")
+    producto.product_stock -= cantidad_vendida
+    producto.save()
+
+
+# Conecta la señal pre_save al modelo Pedido_detalle
+pre_save.connect(validar_stock, sender=Pedido_detalle)
