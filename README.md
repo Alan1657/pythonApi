@@ -8,7 +8,7 @@ Esta es una API para una ferretería que permite acceder y gestionar items de fe
 
 ```
 git clone https://github.com/Alan1657/pythonApi.git
-cd ferreteria_api
+
 ```
 2. Crea un entorno virtual e instala las dependencias:
 
@@ -40,18 +40,5 @@ make createsuperuser
 ```
 ## Base de datos:
 
-Esto proyecto requiere que tenga instalado MySQL.
-Actualice los datos de la base de datos que quiere utilizar en `settings/locale.py`.
+Esto proyecto se utilizará sqlite3 por defecto en desarrollo. Cuando se realice el deploy en Render utilizar una base de datos PostgreSQL
 
-```
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'nombre_base_de_datos',
-        'USER': 'user',
-        'PASSWORD': 'pass',
-        'HOST': 'host',
-        'PORT': 'port'
-    }
-}
-```
